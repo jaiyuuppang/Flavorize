@@ -1,0 +1,32 @@
+{
+    "name": "jaiyuppang/flavorize",
+    "description": "A personalized food recommendation app",
+    "type": "project",
+    "require": {
+        "php": ">=7.4",
+        "ext-pdo": "*",               
+        "ext-json": "*",
+        "ext-mysqli": "*" ,            
+        "vlucas/phpdotenv": "^5.4",   
+        "symfony/var-dumper": "^5.0", 
+        "twig/twig": "^3.0"           
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "php artisan key:generate" 
+        ],
+        "post-update-cmd": [
+            "php artisan key:generate"
+        ]
+    },
+    "config": {
+        "preferred-install": "dist"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

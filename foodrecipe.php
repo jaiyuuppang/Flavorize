@@ -1,4 +1,4 @@
-<?php
+<?php 
 session_start();
 
 // Initialize ingredients array if not already set
@@ -30,71 +30,32 @@ $recipes = [];
 // Check if search flag is set and there are ingredients
 if (isset($_POST['search']) && !empty($_SESSION['ingredients'])) {
     $ingredients = implode(",", $_SESSION['ingredients']);
-    // Setting the number of recipes to fetch explicitly to 25
-$number = 25;
+    $number = 25; // Explicitly setting number of recipes
 
-// Step 1: Call findByIngredients API
-$findByIngredientsUrl = "https://api.spoonacular.com/recipes/findByIngredients?" .
-    "ingredients=" . urlencode($ingredients) .
-    "&number=" . $number .
-    "&ranking=1" .
-    "&apiKey=" . $apiKey;
+    // Call the complexSearch API for diabetic-friendly recipes
+    $complexSearchUrl = "https://api.spoonacular.com/recipes/complexSearch?" .
+        "includeIngredients=" . urlencode($ingredients) .
+        "&diet=Diabetic" . // Focus on diabetic-friendly recipes
+        "&maxCarbs=45" . // Limit carbohydrates per serving (adjust based on needs)
+        "&addRecipeInformation=true" .
+        "&fillIngredients=true" .
+        "&number=" . $number .
+        "&apiKey=" . $apiKey;
 
-    $response = file_get_contents($findByIngredientsUrl);
-    $findByIngredientsData = json_decode($response, true);
-    
-    if (isset($findByIngredientsData['status']) && $findByIngredientsData['status'] === 'failure') {
-        $errorMessage = $findByIngredientsData['message'];
+    $response = file_get_contents($complexSearchUrl);
+    $complexSearchData = json_decode($response, true);
+
+    if (isset($complexSearchData['status']) && $complexSearchData['status'] === 'failure') {
+        $errorMessage = $complexSearchData['message'];
         echo "<script>alert('API Error: $errorMessage');</script>";
         return; // Exit the script if quota is exceeded
     }
-// Extract recipe IDs from findByIngredients response
-$recipeIds = [];
-if (!empty($findByIngredientsData)) {
-    $recipeIds = array_unique(array_map(fn($recipe) => $recipe['id'], $findByIngredientsData));
-    $ids = implode(",", $recipeIds);
 
-    // Step 2: Call complexSearch API with IDs and intolerances
-    $intolerances = isset($_POST['intolerances']) ? implode(",", $_POST['intolerances']) : '';
-    $complexSearchUrl = "https://api.spoonacular.com/recipes/complexSearch?" .
-        "includeIngredients=" . urlencode($ingredients) .
-        "&intolerances=" . urlencode($intolerances) .
-        "&addRecipeInformation=true" .
-        "&fillIngredients=true" .
-        "&number=" . $number . // Ensure 25 recipes are requested
-        "&apiKey=" . $apiKey;
-
-        $complexSearchResponse = file_get_contents($complexSearchUrl);
-        $complexSearchData = json_decode($complexSearchResponse, true);
-        
-        if (isset($complexSearchData['status']) && $complexSearchData['status'] === 'failure') {
-            $errorMessage = $complexSearchData['message'];
-            echo "<script>alert('API Error: $errorMessage');</script>";
-            return; // Exit the script if quota is exceeded
-        }
-        
-    // Step 3: Merge and deduplicate recipes
-    $mergedRecipes = [];
-    $seenRecipeIds = [];
-
-    foreach ($complexSearchData['results'] as $recipe) {
-        $recipeId = $recipe['id'];
-        if (!in_array($recipeId, $seenRecipeIds)) {
-            $findByIngredientsMatch = array_filter($findByIngredientsData, fn($findByRecipe) => $findByRecipe['id'] === $recipeId);
-            if (!empty($findByIngredientsMatch)) {
-                $matchedRecipe = reset($findByIngredientsMatch);
-                $recipe['usedIngredients'] = $matchedRecipe['usedIngredients'];
-                $recipe['missedIngredients'] = $matchedRecipe['missedIngredients'];
-            }
-            $mergedRecipes[] = $recipe;
-            $seenRecipeIds[] = $recipeId; // Track seen IDs to prevent duplicates
-        }
-    }
-
-    $recipes = $mergedRecipes;
-}
+    // Process the recipes
+    $recipes = $complexSearchData['results'] ?? [];
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -260,24 +221,7 @@ if (!empty($findByIngredientsData)) {
             </form>
         </div>
 
-        <form method="post" action="">
-            <div class="intolerance-container">
-                <h3>Select Intolerances:</h3>
-                <div class="intolerances">
-                    <label><input type="checkbox" name="intolerances[]" value="dairy"> Dairy</label>
-                    <label><input type="checkbox" name="intolerances[]" value="egg"> Egg</label>
-                    <label><input type="checkbox" name="intolerances[]" value="gluten"> Gluten</label>
-                    <label><input type="checkbox" name="intolerances[]" value="grain"> Grain</label>
-                    <label><input type="checkbox" name="intolerances[]" value="peanut"> Peanut</label>
-                    <label><input type="checkbox" name="intolerances[]" value="seafood"> Seafood</label>
-                    <label><input type="checkbox" name="intolerances[]" value="sesame"> Sesame</label>
-                    <label><input type="checkbox" name="intolerances[]" value="shellfish"> Shellfish</label>
-                    <label><input type="checkbox" name="intolerances[]" value="soy"> Soy</label>
-                    <label><input type="checkbox" name="intolerances[]" value="sulfite"> Sulfite</label>
-                    <label><input type="checkbox" name="intolerances[]" value="tree nut"> Tree Nut</label>
-                    <label><input type="checkbox" name="intolerances[]" value="wheat"> Wheat</label>
-                </div>
-            </div>
+     
 
             <label for="ranking">Search Priority:</label>
             <select name="ranking" id="ranking">
