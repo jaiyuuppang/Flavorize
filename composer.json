@@ -17,12 +17,7 @@
         }
     },
     "scripts": {
-        "post-install-cmd": [
-            "php artisan key:generate" 
-        ],
-        "post-update-cmd": [
-            "php artisan key:generate"
-        ]
+        
     },
     "config": {
         "preferred-install": "dist"
