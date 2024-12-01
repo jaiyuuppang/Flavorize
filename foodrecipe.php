@@ -1,9 +1,32 @@
-<?php 
+<?php
 session_start();
 
 // Initialize ingredients array if not already set
 if (!isset($_SESSION['ingredients'])) {
     $_SESSION['ingredients'] = [];
+}
+
+// Spoonacular API Key
+$apiKey = "93fc7f6eeb1e46839c3a9b58af81eaa6";
+
+// Function to fetch glycemic load of an ingredient
+function getGlycemicLoad($ingredient, $apiKey)
+{
+    // Step 1: Search for the ingredient by name to get its ID
+    $ingredientSearchUrl = "https://api.spoonacular.com/food/ingredients/search?query=" . urlencode($ingredient) . "&number=1&apiKey=" . $apiKey;
+    $response = file_get_contents($ingredientSearchUrl);
+    $data = json_decode($response, true);
+
+    if (!empty($data['results'])) {
+        $ingredientId = $data['results'][0]['id'];
+        // Step 2: Fetch detailed nutrition information for the ingredient
+        $nutritionUrl = "https://api.spoonacular.com/food/ingredients/" . $ingredientId . "/information?amount=100&unit=grams&apiKey=" . $apiKey;
+        $nutritionResponse = file_get_contents($nutritionUrl);
+        $nutritionData = json_decode($nutritionResponse, true);
+
+        return $nutritionData['glycemicLoad'] ?? 'Unknown'; // Return glycemic load or 'Unknown' if not available
+    }
+    return 'Unknown'; // Handle cases where the ingredient is not found
 }
 
 // Logic to handle form actions
@@ -30,20 +53,22 @@ $recipes = [];
 // Check if search flag is set and there are ingredients
 if (isset($_POST['search']) && !empty($_SESSION['ingredients'])) {
     $ingredients = implode(",", $_SESSION['ingredients']);
-    $number = 25; // Explicitly setting number of recipes
+    $number = 25; // Fetch 25 recipes
 
-    // Call the complexSearch API for diabetic-friendly recipes
+    // Step 1: Call complexSearch API with Mediterranean cuisine and health filters
     $complexSearchUrl = "https://api.spoonacular.com/recipes/complexSearch?" .
         "includeIngredients=" . urlencode($ingredients) .
-        "&diet=Diabetic" . // Focus on diabetic-friendly recipes
-        "&maxCarbs=45" . // Limit carbohydrates per serving (adjust based on needs)
+        "&cuisine=Mediterranean" . // Filter for Mediterranean dishes
+        "&maxCarbs=50" . // Example limit for carbs (adjust as needed)
+        "&maxSugar=10" . // Example limit for sugar (adjust as needed)
+        "&maxCalories=500" . // Example limit for calories (adjust as needed)
         "&addRecipeInformation=true" .
         "&fillIngredients=true" .
         "&number=" . $number .
         "&apiKey=" . $apiKey;
 
-    $response = file_get_contents($complexSearchUrl);
-    $complexSearchData = json_decode($response, true);
+    $complexSearchResponse = file_get_contents($complexSearchUrl);
+    $complexSearchData = json_decode($complexSearchResponse, true);
 
     if (isset($complexSearchData['status']) && $complexSearchData['status'] === 'failure') {
         $errorMessage = $complexSearchData['message'];
@@ -51,11 +76,10 @@ if (isset($_POST['search']) && !empty($_SESSION['ingredients'])) {
         return; // Exit the script if quota is exceeded
     }
 
-    // Process the recipes
-    $recipes = $complexSearchData['results'] ?? [];
+    // Step 2: Process recipes
+    $recipes = $complexSearchData['results'];
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -202,16 +226,15 @@ if (isset($_POST['search']) && !empty($_SESSION['ingredients'])) {
         <div class="ingredients-list">
             <h3>Your Ingredients:</h3>
             <ul>
-                <?php foreach ($_SESSION['ingredients'] as $ing): ?>
-                    <li class="ingredient-item">
-                        <?php echo htmlspecialchars($ing); ?>
-                        <form method="post" style="display: inline;">
-                            <input type="hidden" name="remove_ingredient" value="<?php echo htmlspecialchars($ing); ?>">
-                            <button type="submit" class="remove-btn">&times;</button>
-                        </form>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
+        <?php foreach ($_SESSION['ingredients'] as $ingredient): ?>
+            <li>
+                <?= htmlspecialchars($ingredient) ?> - Glycemic Load: <?= getGlycemicLoad($ingredient, $apiKey) ?>
+                <form method="post" style="display:inline;">
+                    <button type="submit" name="remove_ingredient" value="<?= htmlspecialchars($ingredient) ?>">Remove</button>
+                </form>
+            </li>
+        <?php endforeach; ?>
+    </ul>
             <p>You currently have <?php echo count($_SESSION['ingredients']); ?> ingredients.</p>
         </div>
 
@@ -221,7 +244,7 @@ if (isset($_POST['search']) && !empty($_SESSION['ingredients'])) {
             </form>
         </div>
 
-     
+      
 
             <label for="ranking">Search Priority:</label>
             <select name="ranking" id="ranking">
