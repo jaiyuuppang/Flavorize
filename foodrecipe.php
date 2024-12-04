@@ -9,25 +9,9 @@ if (!isset($_SESSION['ingredients'])) {
 // Spoonacular API Key
 $apiKey = "93fc7f6eeb1e46839c3a9b58af81eaa6";
 
-// Function to fetch glycemic load of an ingredient
-function getGlycemicLoad($ingredient, $apiKey)
-{
-    // Step 1: Search for the ingredient by name to get its ID
-    $ingredientSearchUrl = "https://api.spoonacular.com/food/ingredients/search?query=" . urlencode($ingredient) . "&number=1&apiKey=" . $apiKey;
-    $response = file_get_contents($ingredientSearchUrl);
-    $data = json_decode($response, true);
-
-    if (!empty($data['results'])) {
-        $ingredientId = $data['results'][0]['id'];
-        // Step 2: Fetch detailed nutrition information for the ingredient
-        $nutritionUrl = "https://api.spoonacular.com/food/ingredients/" . $ingredientId . "/information?amount=100&unit=grams&apiKey=" . $apiKey;
-        $nutritionResponse = file_get_contents($nutritionUrl);
-        $nutritionData = json_decode($nutritionResponse, true);
-
-        return $nutritionData['glycemicLoad'] ?? 'Unknown'; // Return glycemic load or 'Unknown' if not available
-    }
-    return 'Unknown'; // Handle cases where the ingredient is not found
-}
+// Initialize variables
+$totalPages = 0; // Initialize totalPages
+$recipes = []; // Initialize recipes
 
 // Logic to handle form actions
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -47,24 +31,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-$apiKey = "93fc7f6eeb1e46839c3a9b58af81eaa6";
-$recipes = [];
+// Handle recipe search
+$recipesPerPage = 5; // Number of recipes to display per page
+$currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($currentPage - 1) * $recipesPerPage;
 
 // Check if search flag is set and there are ingredients
-if (isset($_POST['search']) && !empty($_SESSION['ingredients'])) {
+if (isset($_GET['search']) && !empty($_SESSION['ingredients'])) {
     $ingredients = implode(",", $_SESSION['ingredients']);
-    $number = 25; // Fetch 25 recipes
 
     // Step 1: Call complexSearch API with Mediterranean cuisine and health filters
     $complexSearchUrl = "https://api.spoonacular.com/recipes/complexSearch?" .
         "includeIngredients=" . urlencode($ingredients) .
-        "&cuisine=Mediterranean" . // Filter for Mediterranean dishes
-        "&maxCarbs=50" . // Example limit for carbs (adjust as needed)
-        "&maxSugar=10" . // Example limit for sugar (adjust as needed)
-        "&maxCalories=500" . // Example limit for calories (adjust as needed)
+        "&cuisine=Mediterranean" .
+        "&maxCarbs=50" .
+        "&maxSugar=10" .
+        "&maxCalories=500" .
         "&addRecipeInformation=true" .
         "&fillIngredients=true" .
-        "&number=" . $number .
+        "&number=" . $recipesPerPage .
+        "&offset=" . $offset . // Add offset for pagination
         "&apiKey=" . $apiKey;
 
     $complexSearchResponse = file_get_contents($complexSearchUrl);
@@ -78,6 +64,8 @@ if (isset($_POST['search']) && !empty($_SESSION['ingredients'])) {
 
     // Step 2: Process recipes
     $recipes = $complexSearchData['results'];
+    $totalRecipes = $complexSearchData['totalResults']; // Get total number of recipes
+    $totalPages = ceil($totalRecipes / $recipesPerPage); // Calculate total pages
 }
 ?>
 
@@ -142,7 +130,7 @@ if (isset($_POST['search']) && !empty($_SESSION['ingredients'])) {
         }
 
         .pagination button {
-            padding: 10px;
+ padding: 10px;
             margin: 0 5px;
             background-color: #4CAF50;
             color: white;
@@ -220,21 +208,19 @@ if (isset($_POST['search']) && !empty($_SESSION['ingredients'])) {
             </form>
         </div>
 
-
-
         <!-- LIST OF INGREDIENTS -->
         <div class="ingredients-list">
             <h3>Your Ingredients:</h3>
             <ul>
-        <?php foreach ($_SESSION['ingredients'] as $ingredient): ?>
-            <li>
-                <?= htmlspecialchars($ingredient) ?> - Glycemic Load: <?= getGlycemicLoad($ingredient, $apiKey) ?>
-                <form method="post" style="display:inline;">
-                    <button type="submit" name="remove_ingredient" value="<?= htmlspecialchars($ingredient) ?>">Remove</button>
-                </form>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+                <?php foreach ($_SESSION['ingredients'] as $ingredient): ?>
+                    <li>
+                        <?= htmlspecialchars($ingredient) ?>
+                        <form method="post" style="display:inline;">
+                            <button type="submit" name="remove_ingredient" value="<?= htmlspecialchars($ingredient) ?>">Remove</button>
+                        </form>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
             <p>You currently have <?php echo count($_SESSION['ingredients']); ?> ingredients.</p>
         </div>
 
@@ -244,15 +230,14 @@ if (isset($_POST['search']) && !empty($_SESSION['ingredients'])) {
             </form>
         </div>
 
-      
-
-            <label for="ranking">Search Priority:</label>
-            <select name="ranking" id="ranking">
-                <option value="1">Minimal Missing Ingredients</option>
-                <option value="2">Highest Matching Ingredients</option>
-            </select>
-            <input type="submit" name="search" class="blue_btn" value="Search for Recipes">
+       
+        
+        <div class="search-container">
+        <form method="get" action="">
+            <input type="hidden" name="search" value="1">
+            <input type="submit" class="blue_btn" value="Search for Recipes">
         </form>
+    </div>
 
         <div class="recipe-container">
             <div class="food-items">
@@ -296,8 +281,16 @@ if (isset($_POST['search']) && !empty($_SESSION['ingredients'])) {
                 <?php endif; ?>
             </div>
         </div>
-
-
+ <!-- Pagination Controls -->
+ <?php if ($totalPages > 0): ?>
+        <div class="pagination">
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a href="?page=<?php echo $i; ?>&ingredient=<?php echo urlencode(implode(',', $_SESSION['ingredients'])); ?>" class="<?php echo ($i === $currentPage) ? 'active' : ''; ?>">
+                    <?php echo $i; ?>
+                </a>
+            <?php endfor; ?>
+        </div>
+    <?php endif; ?>
         <!-- Recipe Modal -->
         <div id="recipeModal" class="modal">
             <div class="modal-content">
@@ -492,7 +485,7 @@ if (isset($_POST['search']) && !empty($_SESSION['ingredients'])) {
                                 suggestionItem.classList.add('autocomplete-suggestion');
                                 suggestionItem.textContent = item.name;
 
-                                suggestionItem.addEventListener('click', () => {
+                                suggestionItem.addEventListener(' click', () => {
                                     ingredientSearch.value = item.name;
                                     suggestions.innerHTML = ''; // Clear suggestions
                                 });
@@ -513,8 +506,7 @@ if (isset($_POST['search']) && !empty($_SESSION['ingredients'])) {
                 }
             });
 
-
-            // View Recipe pop-up toh bossinggggggz
+            // View Recipe pop-up
             function viewRecipeDetails(recipeId) {
                 const apiKey = "<?php echo $apiKey; ?>";
 
@@ -536,27 +528,27 @@ if (isset($_POST['search']) && !empty($_SESSION['ingredients'])) {
                             ingredientsList.appendChild(li);
                         });
 
-                        // Check if instructions are structured (i.e., already contains <ol><li>)
+                        // Check if instructions are structured
                         const instructions = recipe.instructions || "No instructions provided.";
                         const instructionsList = document.createElement('ol');
 
-                        // Clean up instructions if they contain dual numbering (e.g., "1.1.", "2.2.")
+                        // Clean up instructions if they contain dual numbering
                         const cleanedInstructions = instructions.replace(/\d+\.\d+\./g, match => {
                             return match.split('.')[0] + '.';
                         });
 
                         // Split cleaned instructions into steps and add them to an ordered list
-                        const instructionSteps = cleanedInstructions.split('.');  // Split by periods (or any other delimiter you prefer)
+                        const instructionSteps = cleanedInstructions.split('.');
                         instructionSteps.forEach(step => {
-                            if (step.trim()) {  // Skip empty strings
+                            if (step.trim()) {
                                 const li = document.createElement('li');
                                 li.textContent = step.trim();
                                 instructionsList.appendChild(li);
                             }
                         });
 
-                        document.getElementById("recipeInstructions").innerHTML = '';  // Clear previous instructions
-                        document.getElementById("recipeInstructions").appendChild(instructionsList);  // Add the numbered list
+                        document.getElementById("recipeInstructions").innerHTML = '';
+                        document.getElementById("recipeInstructions").appendChild(instructionsList);
 
                         // Show modal
                         const modal = document.getElementById("recipeModal");
@@ -564,8 +556,6 @@ if (isset($_POST['search']) && !empty($_SESSION['ingredients'])) {
                     })
                     .catch(error => console.error('Error fetching recipe details:', error));
             }
-
-
 
             // Close Modal Function
             function closeModal() {

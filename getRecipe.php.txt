@@ -1,0 +1,38 @@
+<?php
+// Spoonacular API key
+$api_key = "YOUR_API_KEY";
+
+// API URL to fetch Mediterranean recipes
+$api_url = "https://api.spoonacular.com/recipes/complexSearch?cuisine=mediterranean&apiKey=$api_key&number=10";
+
+// Fetch data from Spoonacular
+$response = file_get_contents($api_url);
+$data = json_decode($response, true);
+
+if ($data && isset($data['results'])) {
+    // Connect to MySQL database
+    $conn = new mysqli("localhost", "username", "password", "flavorize_db");
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // Iterate through the recipes and insert them into the database
+    foreach ($data['results'] as $recipe) {
+        $id = $recipe['id'];
+        $title = $conn->real_escape_string($recipe['title']);
+        $image = $conn->real_escape_string($recipe['image']);
+
+        // Insert recipe into the database
+        $sql = "INSERT INTO recipes (recipe_id, title, image, cuisine) VALUES ('$id', '$title', '$image', 'Mediterranean')";
+        if ($conn->query($sql) === TRUE) {
+            echo "Recipe '$title' added to the database successfully!<br>";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+    }
+
+    $conn->close();
+} else {
+    echo "Failed to fetch recipes.";
+}
+?>
