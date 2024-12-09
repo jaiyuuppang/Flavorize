@@ -9,7 +9,9 @@
         "ext-mysqli": "*" ,            
         "vlucas/phpdotenv": "^5.4",   
         "symfony/var-dumper": "^5.0", 
-        "twig/twig": "^3.0"           
+        "twig/twig": "^3.0",
+        "openai-php/client": "^0.10.3",
+        "guzzlehttp/guzzle": "^7.9"           
     },
     "autoload": {
         "psr-4": {
@@ -20,7 +22,10 @@
         
     },
     "config": {
-        "preferred-install": "dist"
+        "preferred-install": "dist",
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true

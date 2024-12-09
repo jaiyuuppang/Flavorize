@@ -53,7 +53,7 @@
                     <a href="foodrecipe.php">
                         <li>Food Recipe</li>
                     </a>
-                    <a href="social.php">
+                    <a href="javascript:void(0);" onclick="checkLogin()">
                         <li>Social</li>
                     </a>
                 </ul>
@@ -68,8 +68,10 @@
         <div class="main-slide">
             <div>
                 <h1>Enjoy <span>Delicious Food</span> In Your Healthy Life.</h1>
-                <p>Discover a world of flavors with Flavorize. From traditional recipes to the most innovative creations, find inspiration for every occasion. 
-                    Customize your meals to suit your tastes and dietary needs. With Flavorize, healthy cooking is easy and fun.</p>
+                <p>Discover a world of flavors with Flavorize. From traditional recipes to the most innovative
+                    creations, find inspiration for every occasion.
+                    Customize your meals to suit your tastes and dietary needs. With Flavorize, healthy cooking is easy
+                    and fun.</p>
 
                 <button class="red_btn">Get Started <i class="fa-solid fa-arrow-right-long"></i></button>
             </div>
@@ -84,8 +86,9 @@
                     <img src="./images/item1.png" alt="Item 1">
                 </div>
                 <h3>Power Bowl</h3>
-                <p>Fuel your day with this energizing power bowl! 
-                    Packed with protein-rich chickpeas, fiber-filled quinoa, and healthy fats from avocado, this dish will keep you satisfied and focused.</p>
+                <p>Fuel your day with this energizing power bowl!
+                    Packed with protein-rich chickpeas, fiber-filled quinoa, and healthy fats from avocado, this dish
+                    will keep you satisfied and focused.</p>
                 <button class="white_btn">See Menu</button>
             </div>
             <div class="item">
@@ -93,8 +96,9 @@
                     <img src="./images/item2.png" alt="Item 1">
                 </div>
                 <h3>Tomato and Mozzarella Salad</h3>
-                <p>A simple yet elegant salad that celebrates the flavors of summer. 
-                    Juicy tomatoes, creamy mozzarella, and fresh basil are tossed with a light vinaigrette for a refreshing and delicious dish.</p>
+                <p>A simple yet elegant salad that celebrates the flavors of summer.
+                    Juicy tomatoes, creamy mozzarella, and fresh basil are tossed with a light vinaigrette for a
+                    refreshing and delicious dish.</p>
                 <button class="red_btn">See Menu</button>
             </div>
             <div class="item">
@@ -102,8 +106,9 @@
                     <img src="./images/item3.png" alt="Item 1">
                 </div>
                 <h3> Rainbow Salad</h3>
-                <p> A vibrant and refreshing salad that's perfect for any occasion. 
-                    This colorful salad features roasted potatoes, tomatoes, cucumbers, mushrooms, mung beans, butter beans, avocado, and a variety of fresh greens.</p>
+                <p> A vibrant and refreshing salad that's perfect for any occasion.
+                    This colorful salad features roasted potatoes, tomatoes, cucumbers, mushrooms, mung beans, butter
+                    beans, avocado, and a variety of fresh greens.</p>
                 <button class="white_btn">See Menu</button>
             </div>
         </div>
@@ -122,8 +127,9 @@
                     </div>
                     <div>
                         <h4>Personalized Recipe Recommendations</h4>
-                        <p>Find recipes tailored to your dietary needs and available ingredients. 
-                            Flavorize takes the guesswork out of meal planning, making it easy to choose dishes that are healthy, delicious, and meet your unique preferences.</p>
+                        <p>Find recipes tailored to your dietary needs and available ingredients.
+                            Flavorize takes the guesswork out of meal planning, making it easy to choose dishes that are
+                            healthy, delicious, and meet your unique preferences.</p>
                     </div>
                 </div>
                 <div class="q-ans">
@@ -132,8 +138,9 @@
                     </div>
                     <div>
                         <h4>Community of Food Lovers</h4>
-                        <p>Join a community where food enthusiasts connect, share recipes, and inspire each other. 
-                            Our social features let you share your cooking experiences, get tips, and find motivation from like-minded individuals.</p>
+                        <p>Join a community where food enthusiasts connect, share recipes, and inspire each other.
+                            Our social features let you share your cooking experiences, get tips, and find motivation
+                            from like-minded individuals.</p>
                     </div>
                 </div>
                 <div class="q-ans">
@@ -142,8 +149,9 @@
                     </div>
                     <div>
                         <h4>Health-Focused and Nutritional Insights</h4>
-                        <p>Discover the nutritional benefits of the ingredients in your meals. 
-                            Flavorize promotes wellness by helping you understand how each recipe contributes to a balanced and healthy lifestyle.</p>
+                        <p>Discover the nutritional benefits of the ingredients in your meals.
+                            Flavorize promotes wellness by helping you understand how each recipe contributes to a
+                            balanced and healthy lifestyle.</p>
                     </div>
                 </div>
             </div>
@@ -152,8 +160,10 @@
         <div class="main-slide3">
             <div class="fav-head">
                 <h3>Our Popular Food Items</h3>
-                <p>Explore some of our most popular and mouth-watering recipes, specially curated for flavor and nutrition. 
-                    From hearty meals to refreshing salads, each dish is crafted to satisfy your cravings while keeping you healthy.</p>
+                <p>Explore some of our most popular and mouth-watering recipes, specially curated for flavor and
+                    nutrition.
+                    From hearty meals to refreshing salads, each dish is crafted to satisfy your cravings while keeping
+                    you healthy.</p>
             </div>
             <div class="fav-food">
                 <div class="item">
@@ -161,7 +171,8 @@
                         <img src="./images/plate1.png" alt="">
                     </div>
                     <h3>Grilled Chicken Quinoa Salad</h3>
-                    <p>A wholesome blend of grilled chicken, fresh arugula, roasted pumpkin, and quinoa, tossed with a light vinaigrette for a nutritious boost.</p>
+                    <p>A wholesome blend of grilled chicken, fresh arugula, roasted pumpkin, and quinoa, tossed with a
+                        light vinaigrette for a nutritious boost.</p>
                     <p class="fav-price"></p>
                 </div>
                 <div class="item">
@@ -169,7 +180,8 @@
                         <img src="./images/plate2.png" alt="">
                     </div>
                     <h3>Lemon Garlic Salmon</h3>
-                    <p>Fresh salmon fillet grilled to perfection with a zesty lemon garlic seasoning, served with sautéed greens and cherry tomatoes.</p>
+                    <p>Fresh salmon fillet grilled to perfection with a zesty lemon garlic seasoning, served with
+                        sautéed greens and cherry tomatoes.</p>
                     <p class="fav-price"></p>
                 </div>
                 <div class="item">
@@ -177,7 +189,8 @@
                         <img src="./images/plate3.png" alt="">
                     </div>
                     <h3>Steak with Baby Potatoes</h3>
-                    <p>Juicy steak seasoned with rosemary and garlic, paired with crispy roasted baby potatoes for a satisfying meal.</p>
+                    <p>Juicy steak seasoned with rosemary and garlic, paired with crispy roasted baby potatoes for a
+                        satisfying meal.</p>
                     <p class="fav-price"></p>
                 </div>
                 <div class="item">
@@ -185,7 +198,8 @@
                         <img src="./images/plate4.png" alt="">
                     </div>
                     <h3>Chicken & Veggie Platter</h3>
-                    <p>Tender, seasoned chicken served with a colorful assortment of fresh, roasted vegetables, topped with a light herb garnish for a burst of flavor in every bite.</p>
+                    <p>Tender, seasoned chicken served with a colorful assortment of fresh, roasted vegetables, topped
+                        with a light herb garnish for a burst of flavor in every bite.</p>
                     <p class="fav-price"></p>
                 </div>
             </div>
@@ -195,8 +209,10 @@
         <div class="main-slide4">
             <div class="chef-feed">
                 <h2>User <span style="color: red;">Feedback</span></h2>
-                <p>"The Flavorize platform makes recipe exploration and food discovery so much easier and more enjoyable. 
-                    It’s a community-driven experience where people come together to share their love for delicious, healthy food!"</p>
+                <p>"The Flavorize platform makes recipe exploration and food discovery so much easier and more
+                    enjoyable.
+                    It’s a community-driven experience where people come together to share their love for delicious,
+                    healthy food!"</p>
                 <div class="chef-detail">
                     <div>
                         <img src="./images/logo.jpg" alt="">
@@ -237,7 +253,8 @@
                         <i class="fa-solid fa-envelope email"></i>
                     </div>
                     <div class="input_box">
-                        <input type="password" name="password" id="login-password" placeholder="Enter your password" required>
+                        <input type="password" name="password" id="login-password" placeholder="Enter your password"
+                            required>
                         <i class="fa-solid fa-lock password"></i>
                         <i class="fa-regular fa-eye-slash pw_hide" onclick="togglePassword('login-password', this)"></i>
                     </div>
@@ -265,6 +282,10 @@
                     <div class="input_box">
                         <input type="email" name="email" placeholder="Enter your email" required>
                         <i class="fa-solid fa-envelope email"></i>
+                    </div>
+                    <div class="input_box">
+                        <input type="username" name="username" placeholder="Enter your username" required>
+                        <i class="fa-solid fa-address-card card"></i>
                     </div>
                     <div class="input_box">
                         <input type="first_name" name="first_name" placeholder="Enter your first name" required>
@@ -373,7 +394,7 @@
             signupForm.style.display = 'none'; // Hide signup form
             loginForm.style.display = 'block'; // Show login form
         });
-        
+
         function validatePasswords() {
             const password = document.getElementById("signup-create-password").value;
             const confirmPassword = document.getElementById("signup-confirm-password").value;
@@ -418,6 +439,15 @@
             cross.style.display = 'none';
             headerbar.style.right = '-100%';
         });
+
+        function checkLogin() {
+            <?php if (!isset($_SESSION['user_id'])): ?>
+                alert('You need to be logged in to access the Social page.');
+                window.location.href = 'index.php'; // Redirect to the login page
+            <?php else: ?>
+                window.location.href = 'social.php'; // Redirect to the social page if logged in
+            <?php endif; ?>
+        }
     </script>
 </body>
 

@@ -89,143 +89,244 @@ button,
 
 /* Main Container */
 .home {
-  padding: 20px 7vw;
-  margin-top: 20px;
+  padding: 40px 7vw;
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 60px);
 }
 
-/* Ingredient Input */
+/* Ingredient Input Section */
 .ingredient-input {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.ingredient-input h2 {
+  color: #2d3436;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
 }
 
 .ingredient-input input[type="text"] {
-  padding: 10px;
+  padding: 15px 20px;
   width: 60%;
   font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  margin-right: 10px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  margin-right: 15px;
+  transition: all 0.3s ease;
 }
 
-.autocomplete-suggestions {
-  border: 1px solid #ddd;
-  max-height: 150px;
-  overflow-y: auto;
-  position: absolute;
-  background-color: white;
-  width: 50%;
-  z-index: 10;
+.ingredient-input input[type="text"]:focus {
+  border-color: #ff7e5f;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 126, 95, 0.1);
 }
 
 /* Ingredient List */
 .ingredients-list {
-  text-align: center;
-  margin-top: 20px;
+  margin: 30px auto;
+  max-width: 800px;
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.ingredients-list h3 {
+  color: #2d3436;
+  margin-bottom: 15px;
+  font-size: 1.4rem;
 }
 
 .ingredients-list ul {
-  padding: 0;
-  margin: 10px auto;
-  max-width: 400px;
-  text-align: left;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
 }
 
 .ingredients-list li {
-  background-color: #f4f4f9;
+  background-color: #fff4e1;
   border: 1px solid #ff7e5f;
-  padding: 5px;
-  border-radius: 5px;
-  margin: 5px 0;
+  padding: 8px 15px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
 }
 
-/* Recipe List */
+.ingredients-list li:hover {
+  background-color: #ffe4d3;
+  transform: translateY(-2px);
+}
+
+/* Recipe Container */
+.recipe-container {
+  margin-top: 40px;
+}
+
 .food-items {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* Create 5 equal-width columns */
-  gap: 20px; /* Add some space between items */
-  padding: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  padding: 20px 0;
 }
 
 .item {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-  padding: 20px;
-  text-align: center;
-  width: 250px;
-  transition: transform 0.2s;
+  background-color: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .item:hover {
   transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
 }
 
 .item img {
   width: 100%;
-  height: 150px;
+  height: 200px;
   object-fit: cover;
-  border-radius: 10px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.item-content {
+  padding: 20px;
 }
 
 .item h3 {
-  font-size: 1.2em;
-  margin: 15px 0 10px;
+  font-size: 1.3rem;
+  color: #2d3436;
+  margin-bottom: 12px;
+  line-height: 1.4;
 }
 
 .item p {
-  font-size: 0.9em;
-  color: #777;
+  font-size: 0.95rem;
+  color: #636e72;
+  line-height: 1.6;
+  margin-bottom: 15px;
 }
 
-/* New styling for recipe items with ingredients count */
-.food-items .item ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.item .tags {
   display: flex;
   flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 15px;
 }
 
-.food-items .item ul li {
-  background-color: #f7f7f7;
-  padding: 8px 12px;
-  margin: 5px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  color: #333;
-  text-transform: capitalize;
-  display: inline-block;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+.item .tag {
+  background-color: #f8f9fa;
+  color: #636e72;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 0.85rem;
 }
 
-/* Used Ingredients */
-.food-items .item ul li.used {
-  background-color: #e8f5e9;
-  color: #388e3c;
+/* Filter Section */
+.filter-section {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.filter-section h3 {
+  color: #2d3436;
+  margin-bottom: 15px;
+}
+
+.filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-option label {
+  font-size: 0.95rem;
+  color: #636e72;
+}
+
+/* Button Styles */
+.btn {
+  padding: 12px 24px;
+  border-radius: 8px;
   font-weight: 600;
-}
-
-/* Missing Ingredients */
-.food-items .item ul li.missing {
-  background-color: #ffe0e0;
-  color: #d32f2f;
-  font-weight: 600;
-}
-
-/* View Recipe button */
-.food-items .item .white_btn {
-  background-color: #4caf50;
-  color: #fff;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 5px;
+  transition: all 0.3s ease;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  border: none;
 }
 
-.food-items .item .white_btn:hover {
-  background-color: #45a049;
+.btn-primary {
+  background-color: #ff7e5f;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #ff6b4a;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: #f8f9fa;
+  color: #2d3436;
+  border: 1px solid #e0e0e0;
+}
+
+.btn-secondary:hover {
+  background-color: #e9ecef;
+}
+
+/* Modal Styling */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  margin: 5% auto;
+  padding: 30px;
+  width: 90%;
+  max-width: 800px;
+  border-radius: 15px;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.close-btn {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #636e72;
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: #2d3436;
 }
 
 /* Footer */
@@ -882,8 +983,6 @@ button,
   background-color: #45a049;
 }
 
-
-
 .autocomplete-suggestion {
   padding: 10px;
   cursor: pointer;
@@ -911,24 +1010,4 @@ button,
 
 .remove-btn:hover {
   color: darkred;
-}
-
-/* Styling for pagination controls */
-.pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.pagination button {
-  padding: 10px;
-  margin: 0 5px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.pagination button:hover {
-  background-color: #45a049;
 }

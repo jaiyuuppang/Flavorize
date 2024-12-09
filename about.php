@@ -73,7 +73,6 @@
             </div>
         </div>
 
-
         <!-- People Behind Flavorize Section -->
         <div class="developers" id="team-section">
             <h2>THE PEOPLE BEHIND FLAVORIZE</h2>
@@ -300,15 +299,13 @@
             }
 
             bar.addEventListener('click', () => {
-                headerbar.style.right = '0';
-                closeBtn.style.display = 'block';
-                bar.style.display = 'none';
+                headerbar.style.display = 'flex';
+                headerbar.classList.add('active');
             });
 
             closeBtn.addEventListener('click', () => {
-                headerbar.style.right = '-100%';
-                closeBtn.style.display = 'none';
-                bar.style.display = 'block';
+                headerbar.style.display = 'none';
+                headerbar.classList.remove('active');
             });
 
             document.addEventListener("DOMContentLoaded", function () {
@@ -323,7 +320,6 @@
                     member.classList.add('visible');
                 });
             });
-
 
             document.addEventListener("DOMContentLoaded", function () {
                 const elements = document.querySelectorAll('.developer-card');
@@ -354,7 +350,15 @@
                 handleScroll();
             });
 
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
         </script>
-</body>
+    </body>
 
 </html>

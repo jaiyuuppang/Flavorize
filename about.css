@@ -1,6 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 
-
 * {
     margin: 0;
     padding: 0;
@@ -156,6 +155,7 @@
     color: #777;
     font-size: 0.9rem;
 }
+
 /* About Features */
 .about-features {
     display: flex;
@@ -231,6 +231,24 @@
     box-shadow:none;
 }
 
+/* Our Story Content Styling */
+.our-story-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: justify;
+}
+
+.our-story-content p {
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.our-story-content img {
+    display: block;
+    margin: 2rem auto;
+    max-width: 100%;
+    height: auto;
+}
 
 /* Developers Section */
 .developers {
@@ -260,7 +278,6 @@
     border: 4px solid rgb(248, 232, 217);
 }
 
-
 /* Developers Section Header */
 .developers h2 {
     text-align: center; /* Center the text */
@@ -268,7 +285,6 @@
     margin-bottom: 20px; /* Add margin to the bottom */
     color: #333; /* Match the text color */
 }
-
 
 .about-content, .our-story-content {
     display: flex;

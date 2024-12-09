@@ -572,6 +572,7 @@
 }
 
 .input_box i.email,
+.input_box i.card,
 .input_box i.password,
 .input_box i.firstName,
 .input_box i.lastName,
@@ -580,6 +581,7 @@
 }
 
 .input_box input:focus ~ i.email,
+.input_box input:focus ~ i.card,
 .input_box input:focus ~ i.password,
 .input_box input:focus ~ i.firstName,
 .input_box input:focus ~ i.lastName,
@@ -651,7 +653,45 @@
   aspect-ratio: 1/1;
   border-radius: 50%;
   overflow: hidden;
+  cursor: pointer;
 }
+
+/* Dropdown container */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  display: none; /* Initially hidden */
+  position: absolute;
+  right: 0;
+  margin-top: 10px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1003;
+  padding: 10px 15px;
+  text-align: center;
+}
+
+/* Logout link */
+.logout-link {
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+  display: block;
+  padding: 5px 10px;
+  border-radius: 3px;
+  transition: background-color 0.3s;
+}
+
+.logout-link:hover {
+  background-color: #f2f2f2;
+}
+
 
 @media only screen and (max-width: 768px) {
   .header .nav,

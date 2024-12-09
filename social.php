@@ -1,3 +1,34 @@
+<?php
+session_start();
+include "database.php";
+
+if (!isset($_SESSION['id'])) {
+    // Redirect to login if session ID is not set
+    header("Location: index.php");
+    exit();
+}
+
+$id = $_SESSION['id'];
+
+// Prepare the SQL statement to prevent SQL injection
+$sql = $conn->prepare("SELECT * FROM users WHERE id = ?");
+$sql->bind_param("i", $id);
+$sql->execute();
+$result = $sql->get_result();
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $profile = $row['profile'];
+    $first_name = $row['first_name'];
+    $last_name = $row['last_name'];
+    $username = $row['username'];
+} else {
+    echo "User not found.";
+    exit();
+}
+$sql->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,9 +51,10 @@
                 <input type="search" name="" id="" placeholder="search">
             </div>
             <div class="create">
-                <label class="btn btn-primary" for="create-post" onclick="window.location.href='foodrecipe.php'">Food Recipe</label>
+                <label class="btn btn-primary" for="create-post" onclick="window.location.href='foodrecipeUser.php'">Food
+                    Recipe</label>
                 <div class="profile-photo">
-                    <img src="./images/developer1.jpg" alt="Profile Picture">
+                    <img src="data:image/png;base64,<?php echo base64_encode($profile); ?>" class="profile_image">
                 </div>
             </div>
         </div>
@@ -33,16 +65,15 @@
             <div class="left">
                 <a class="profile">
                     <div class="profile-photo">
-                        <img src="./images/developer1.jpg" alt="Profile Picture">
+                        <img src="data:image/png;base64,<?php echo base64_encode($profile); ?>" class="profile_image">
                     </div>
                     <div class="handle">
-                        <h4>Rafael De Leon</h4>
+                        <h4><?php echo $first_name . ' ' . $last_name; ?></h4> <!-- Display first and last name -->
                         <p class="text-muted">
-                            @rfldln01
+                            @<?php echo $username; ?> <!-- Display username -->
                         </p>
                     </div>
                 </a>
-
                 <div class="sidebar">
                     <a class="menu-item active">
                         <span><i class="fa-solid fa-house"></i></span>
@@ -91,9 +122,9 @@
             <div class="middle">
                 <form action="#" class="create-post">
                     <div class="profile-photo">
-                        <img src="./images/developer1.jpg" alt="">
+                        <img src="data:image/png;base64,<?php echo base64_encode($profile); ?>" class="profile_image">
                     </div>
-                    <input type="text" placeholder="What's on your mind, Rafael?" id="create-post">
+                    <input type="text" placeholder="What's on your mind, <?php echo $first_name; ?>?" id="create-post">
                     <input type="submit" value="Post" class="btn btn-primary">
                 </form>
 
