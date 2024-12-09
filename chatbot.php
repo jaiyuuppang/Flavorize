@@ -3,7 +3,7 @@ session_start();
 require 'database.php';
 
 // Gemini API configuration
-$geminiApiKey = 'AIzaSyCZFH01hgDv8x2DBSHpjObi3hkixUZ17-w'; // Replace with your Gemini API key
+$geminiApiKey = getenv('GEMINI_API_KEY') ?: 'AIzaSyCZFH01hgDv8x2DBSHpjObi3hkixUZ17-w'; // Fallback to local key if env var not set
 $geminiEndpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
