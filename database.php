@@ -1,9 +1,9 @@
 <?php
-// Check for the presence of the CLEARDB_DATABASE_URL environment variable (Heroku)
-$url = getenv("mysql://e6wvr8segyt2gsxq:lfxgbhtuzfkid59v@b4e9xxkxnpu2v96i.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/ob6b06nh9q0ya27d");
+// Check for the presence of the JAWSDB_URL environment variable (Heroku)
+$url = getenv("mysql://e6wvr8segyt2gsxq:lfxgbhtuzfkid59v@b4e9xxkxnpu2v96i.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/ob6b06nh9q0ya27d"); // Use JAWSDB_URL instead of the ClearDB URL
 
 if ($url) {
-    // Parse the ClearDB URL
+    // Parse the JawsDB URL
     $dbParts = parse_url($url);
 
     $servername = $dbParts['host'];  // Extract the host
