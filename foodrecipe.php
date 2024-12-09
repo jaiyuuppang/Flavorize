@@ -7,14 +7,15 @@ if (!isset($_SESSION['ingredients'])) {
     $_SESSION['ingredients_data'] = []; // Store both GI and GL information
 }
 
-// Spoonacular API Key
-$apiKey = "d1a63598a69d4fcc8b9cdb50ee14532f";
+// RapidAPI Configuration
+$rapidApiKey = "17177631b4msh2313656981af13cp17a208jsne82f2d8c17ee";
+$rapidApiHost = "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com";
 
-// Function to make POST request to Spoonacular API
+// Function to make POST request to Spoonacular API via RapidAPI
 function getGlycemicData($ingredients) {
-    global $apiKey;
+    global $rapidApiKey, $rapidApiHost;
     
-    $url = "https://api.spoonacular.com/food/ingredients/glycemicLoad?apiKey=" . $apiKey;
+    $url = "https://" . $rapidApiHost . "/food/ingredients/glycemicLoad";
     
     $postData = json_encode([
         "ingredients" => $ingredients
@@ -25,6 +26,8 @@ function getGlycemicData($ingredients) {
             'method' => 'POST',
             'header' => [
                 'Content-Type: application/json',
+                'x-rapidapi-host: ' . $rapidApiHost,
+                'x-rapidapi-key: ' . $rapidApiKey,
                 'Content-Length: ' . strlen($postData)
             ],
             'content' => $postData
@@ -115,7 +118,7 @@ if (isset($_GET['search']) && !empty($_SESSION['ingredients'])) {
     $ingredients = implode(",", $_SESSION['ingredients']);
 
     // Step 1: Call complexSearch API with Mediterranean cuisine and health filters
-    $complexSearchUrl = "https://api.spoonacular.com/recipes/complexSearch?" .
+    $complexSearchUrl = "https://" . $rapidApiHost . "/recipes/complexSearch?" .
         "includeIngredients=" . urlencode($ingredients) .
         ($mediterranean === 'true' ? "&cuisine=Mediterranean" : "") . // Conditional Mediterranean cuisine
         ($lowCarb === 'true' ? "&diet=low-carb" : "") . // Conditional low-carb filter
@@ -125,7 +128,8 @@ if (isset($_GET['search']) && !empty($_SESSION['ingredients'])) {
         "&fillIngredients=true" .
         "&number=" . $recipesPerPage .
         "&offset=" . $offset . // Add offset for pagination
-        "&apiKey=" . $apiKey;
+        "&x-rapidapi-host=" . $rapidApiHost .
+        "&x-rapidapi-key=" . $rapidApiKey;
 
     $complexSearchResponse = file_get_contents($complexSearchUrl);
     $complexSearchData = json_decode($complexSearchResponse, true);
@@ -1244,7 +1248,8 @@ if (isset($_GET['search']) && !empty($_SESSION['ingredients'])) {
 
             const ingredientSearch = document.getElementById('ingredientSearch');
             const suggestions = document.getElementById('suggestions');
-            const apiKey = "<?php echo $apiKey; ?>"; // Spoonacular API key
+            const apiKey = "<?php echo $rapidApiKey; ?>"; // RapidAPI key
+            const apiHost = "<?php echo $rapidApiHost; ?>"; // RapidAPI host
 
             // Add error message element after the ingredient search input
             const errorDiv = document.createElement('div');
@@ -1282,7 +1287,7 @@ if (isset($_GET['search']) && !empty($_SESSION['ingredients'])) {
                 const query = ingredientSearch.value;
 
                 if (query.length > 1) { // Start searching after a few letters
-                    fetch(`https://api.spoonacular.com/food/ingredients/autocomplete?query=${query}&number=10&apiKey=${apiKey}`)
+                    fetch(`https://${apiHost}/food/ingredients/autocomplete?query=${query}&number=10&x-rapidapi-host=${apiHost}&x-rapidapi-key=${apiKey}`)
                         .then(response => response.json())
                         .then(data => {
                             suggestions.innerHTML = ''; // Clear previous suggestions
@@ -1314,9 +1319,15 @@ if (isset($_GET['search']) && !empty($_SESSION['ingredients'])) {
 
             // View Recipe pop-up
             function viewRecipeDetails(recipeId) {
-                const apiKey = "<?php echo $apiKey; ?>";
+                const apiKey = "<?php echo $rapidApiKey; ?>";
+                const apiHost = "<?php echo $rapidApiHost; ?>";
 
-                fetch(`https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${apiKey}`)
+                fetch(`https://${apiHost}/recipes/${recipeId}/information`, {
+                    headers: {
+                        'x-rapidapi-host': '<?php echo $apiHost; ?>',
+                        'x-rapidapi-key': '<?php echo $apiKey; ?>'
+                    }
+                })
                     .then(response => response.json())
                     .then(data => {
                         // Update modal title and image
