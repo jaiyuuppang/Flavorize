@@ -1,11 +1,12 @@
 <?php
-// Check for the presence of the JAWSDB_URL environment variable (Heroku)
-$url = getenv("mysql://e6wvr8segyt2gsxq:lfxgbhtuzfkid59v@b4e9xxkxnpu2v96i.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/ob6b06nh9q0ya27d"); // Use JAWSDB_URL instead of the ClearDB URL
+// Get the JAWSDB_URL environment variable (Heroku)
+$url = getenv("JAWSDB_URL"); // This is the proper way to get the JAWSDB URL
 
 if ($url) {
     // Parse the JawsDB URL
     $dbParts = parse_url($url);
 
+    // Extract the individual components from the URL
     $servername = $dbParts['host'];  // Extract the host
     $username = $dbParts['user'];    // Extract the username
     $password = $dbParts['pass'];    // Extract the password
